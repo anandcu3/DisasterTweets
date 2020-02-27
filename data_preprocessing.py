@@ -1,6 +1,11 @@
 import numpy as np
 import pandas as pd
 import re
+import string
+import seaborn as sns
+from scipy.sparse import coo_matrix
+import matplotlib.pyplot as plt
+import operator
 import os
 import nltk
 #nltk.download() uncomment this if not downloaded
@@ -49,7 +54,36 @@ def preprocess():
 
     return cleaned_data
 
+def zipfs_law_plot():
+    cleaned_data = preprocess()
+    frequency_dict = {}
+    for tweets in cleaned_data:
+        for word in tweets.split():
+            count = frequency_dict.get(word, 0)
+            frequency_dict[word] = count + 1
 
-cleaned_data = preprocess()
+    sorted_doc = (sorted(frequency_dict.items(), key=operator.itemgetter(1)))[::-1]
+    frequency = []
+    rank = []
 
+    entry_num = 1
+    for entry in sorted_doc:
+        rank.append(entry_num)
+        entry_num += 1
+        frequency.append(entry[1])
+
+    # calculates slope and intercept value ( y = mx + c)
+    m, c = np.polyfit(np.log(rank), np.log(frequency), 1)
+    y_fit = np.exp(m * np.log(rank) + c)
+
+    plt.loglog(frequency, label='Dataset')
+    plt.loglog(y_fit, ':', label='Zipf')
+    plt.xlabel('rank')
+    plt.ylabel('frequency')
+    plt.title("Word frequencies, Zipf's law")
+    plt.legend()
+    plt.show()
+    sns.despine(trim=True)
+
+zipfs_law_plot()
 
