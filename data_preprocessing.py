@@ -11,7 +11,8 @@ import nltk
 #nltk.download() uncomment this if not downloaded
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn import linear_model, metrics, naive_bayes, svm
 from sklearn.model_selection import train_test_split
 
 ### this script will do the preprocessing for training data
@@ -36,9 +37,15 @@ def preprocess():
     print(data_train.columns)
 
     cleaned_data = []
+    target_labels=[]
     porterstem = PorterStemmer()
-    for i in range(data_train['text'].shape[0]):
+    #    for i in range(data_train['text'].shape[0]):
+
+    for i in range(data_train.shape[0]):
         # Remove unwanted words
+
+        target = data_train.target[i]
+
         tweet_text = re.sub("[^a-zA-Z]", ' ', data_train['text'][i])
         # Transform words to lowercase
         tweet_text = tweet_text.lower()
@@ -48,14 +55,13 @@ def preprocess():
         tweet_text = ' '.join(tweet_text)
         # Append cleaned tweet to corpus
         cleaned_data.append(tweet_text)
-
+        target_labels.append(target)
     print("Corpus created successfully")
     print(pd.DataFrame(cleaned_data)[0].head(10))
 
-    return cleaned_data
+    return cleaned_data, target_labels
 
-def zipfs_law_plot():
-    cleaned_data = preprocess()
+def zipfs_law_plot(cleaned_data):
     frequency_dict = {}
     for tweets in cleaned_data:
         for word in tweets.split():
@@ -85,5 +91,36 @@ def zipfs_law_plot():
     plt.show()
     sns.despine(trim=True)
 
-zipfs_law_plot()
+def tfidf_vectorize(cleaned_data, train_labels):
+    tfidf_vectorizer = TfidfVectorizer()
+    train_vectors = tfidf_vectorizer.fit_transform(cleaned_data)
+    X_train, X_valid, y_train, y_valid = train_test_split(train_vectors, train_labels, test_size=0.2,
+                                                                          shuffle=True)
+    print(f'training dataset size: {X_train.shape}')
+    print(f'validation dataset size: {X_valid.shape}')
+    return X_train, X_valid, y_train, y_valid
 
+def LogisticRegression(X_train, X_valid, y_train, y_valid):
+    classifier = linear_model.LogisticRegression(C=1.0)
+    classifier.fit(X_train, y_train)
+    predictions = classifier.predict_proba(X_valid)
+    log_reg_loss = metrics.log_loss(y_valid, predictions)
+    return log_reg_loss
+
+def naivebaiyes(X_train, X_valid, y_train, y_valid):
+    classifier = naive_bayes.MultinomialNB()
+    classifier.fit(X_train, y_train)
+    predictions = classifier.predict_proba(X_valid)
+    nb_loss = metrics.log_loss(y_valid, predictions)
+    return nb_loss
+
+
+cleaned_data, target_labels = preprocess()
+zipfs_law_plot(cleaned_data)
+X_train, X_valid, y_train, y_valid = tfidf_vectorize(cleaned_data, target_labels)
+log_reg_loss = LogisticRegression(X_train, X_valid, y_train, y_valid)
+nb_loss = naivebaiyes(X_train, X_valid, y_train, y_valid)
+
+print("Losses")
+print(log_reg_loss)
+print(nb_loss)
