@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{float}
+
+
+\begin{document}
+
+% Title page: the course code and course name, student name(s) and ID(s), date, the topic of your project.
+\begin{titlepage}
+ \begin{center}
+  \vspace*{1cm}
+  \begin{huge}
+   \textbf{Real or Not? NLP with Disaster Tweets}
+  \end{huge}
+
+
+  \vspace{0.5cm}
+  ELEC-E5550 - Statistical Natural Language Processing
+
+  \vspace{1.5cm}
+  Group 1: Anand Umashankar 765837, Swati Choudhary 795920
+
+  \vspace{0.5cm}
+  Email : firstname.lastname@aalto.fi
+
+  \vspace{0.5cm}
+  21 January 2019
+ \end{center}
+\end{titlepage}
+
+
+
+\section{Introduction}
+The aim of the project is to use natural language processing techniques to detect if the tweets are about a real disaster or not. The dataset is obtained from  \href{https://www.kaggle.com/c/nlp-getting-started/overview/description}{Kaggle}. The dataset has the following attributes : tweet text, keywords and location. The data is then subjected to  pre-processing techniques like word2vec, lemmatization, removal of stop words, etc using Python \href{https://www.nltk.org/}{NLTK library}. We plan to use two approaches to predict the class.
+
+\begin{enumerate}
+ \item Once the data is preprocessed, we use supervised machine learning classifier like Support Vector Machine(SVM)(This is an initial plan, we might end up using a different classifier).
+ \item The second method is to use a Recurrent Neural Network(RNN).
+\end{enumerate}
+The results of the two techniques are then evaluated to see which technique gives more accurate prediction for the problem in consideration.
+
+\section{Literature Survey}
+\section{Dataset}
+\section{Preprocessing}
+
+\section{Experiments}
+  \subsection{Embeddings}
+    \subsubsection{BERT}
+    \subsubsection{Glove}
+  \subsection{Classifiers}
+    \subsubsection{NN}
+    \subsubsection{RNN}
+
+\section{Reults}
+
+\section{Conclusions \& Future Work}
+Done : Bert embeddings to NN
+
+To Do:
+Bert embeddings to RNN
+Add twitter glove embeddings
+Use the glove embeddings to NN
+Use the glove embeddings to RNN
+% References: The bibliography that you utilized, and that you refer to in the text
+% \bibliographystyle{apalike}
+% \bibliography{references}
+
+% \appendix
+% \section{Appendix}
+% Appendix: Your own program code, possible excerpts of data etc.
+% append samples of data set to the Appendix
+% I linked the git repo and linked the audio set so I think these are unnecessary
+
+
+\end{document}
