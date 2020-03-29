@@ -2,3 +2,4 @@
 */*.ini
 *.tar.gz
 *.zip
+data/*.txt
