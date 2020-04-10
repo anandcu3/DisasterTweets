@@ -1,0 +1,71 @@
+Data shape =  (7613, 5)
+Corpus created successfully
+0            deed reason earthquak may allah forgiv us
+1                 forest fire near la rong sask canada
+2    resid ask shelter place notifi offic evacu she...
+3          peopl receiv wildfir evacu order california
+4    got sent photo rubi alaska smoke wildfir pour ...
+5    rockyfir updat california hwi close direct due...
+6    flood disast heavi rain caus flash flood stree...
+7                               top hill see fire wood
+8               emerg evacu happen build across street
+9                             afraid tornado come area
+Name: 0, dtype: object
+embedding matrix shape -> (18888, 100)
+example: word 'tornado' has index of -> 322
+[ 1.12609994  1.33589995 -0.54071999 -0.56663001  0.87344998 -0.29416999
+  0.74702001  0.34913    -0.014052   -0.26642001  1.0618      0.81356001
+ -1.87979996  0.12581     0.73681003 -0.51569998  0.84859997 -0.2271
+  0.14514001 -0.010658   -0.64598    -0.37512001 -0.77025002  0.098505
+  0.92790997 -0.059978   -1.1566      0.52964002 -0.11316     0.64412999
+  0.052537    0.16043     0.81518     0.25766    -0.28977001  0.79504001
+ -0.036734   -0.34006    -0.20088001  0.20534    -0.50471997  0.0071002
+ -0.16076    -0.66408002 -0.074128    0.69032001  0.26548001  0.69120002
+ -0.38062999  0.082889    0.54912001  0.40722999  0.36107001 -0.15676001
+  0.14453     0.29721001 -0.41839999  0.47850001 -0.29831001 -0.61129999
+ -0.60922998  1.44889998 -0.69287002  0.57797998  0.55926001 -0.12206
+  0.39901    -0.17494     0.17563    -1.12440002  0.81532001  0.19357
+  0.24998    -0.076736    0.017033   -0.17752001 -0.051373    0.13276
+  0.45021001 -0.50568998  1.16279995 -0.65012997  0.80125999  0.63212001
+  0.2615     -0.42930001  0.39184999 -0.50866002 -0.20945001  0.19335
+  0.080099    0.28027001  0.095866   -0.19065    -0.1067      0.37322
+ -0.17718001 -0.1584     -0.24985    -0.16311   ]
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding (Embedding)        (None, 50, 100)           1888800   
+_________________________________________________________________
+spatial_dropout1d (SpatialDr (None, 50, 100)           0         
+_________________________________________________________________
+lstm (LSTM)                  (None, 100)               80400     
+_________________________________________________________________
+dense (Dense)                (None, 1)                 101       
+=================================================================
+Total params: 1,969,301
+Trainable params: 80,501
+Non-trainable params: 1,888,800
+_________________________________________________________________
+Shape of train (6090, 50)
+Shape of Validation  (1523, 50)
+Train on 6090 samples, validate on 1523 samples
+Epoch 1/10
+6090/6090 - 93s - loss: 0.5798 - accuracy: 0.7172 - val_loss: 0.5480 - val_accuracy: 0.7597
+Epoch 2/10
+6090/6090 - 91s - loss: 0.5551 - accuracy: 0.7507 - val_loss: 0.5585 - val_accuracy: 0.7328
+Epoch 3/10
+6090/6090 - 91s - loss: 0.5537 - accuracy: 0.7491 - val_loss: 0.5317 - val_accuracy: 0.7676
+Epoch 4/10
+6090/6090 - 90s - loss: 0.5440 - accuracy: 0.7440 - val_loss: 0.5504 - val_accuracy: 0.7551
+Epoch 5/10
+6090/6090 - 89s - loss: 0.5384 - accuracy: 0.7599 - val_loss: 0.5353 - val_accuracy: 0.7702
+Epoch 6/10
+6090/6090 - 90s - loss: 0.5322 - accuracy: 0.7563 - val_loss: 0.5289 - val_accuracy: 0.7663
+Epoch 7/10
+6090/6090 - 89s - loss: 0.5258 - accuracy: 0.7557 - val_loss: 0.5167 - val_accuracy: 0.7636
+Epoch 8/10
+6090/6090 - 89s - loss: 0.5197 - accuracy: 0.7589 - val_loss: 0.5208 - val_accuracy: 0.7774
+Epoch 9/10
+6090/6090 - 88s - loss: 0.5371 - accuracy: 0.7606 - val_loss: 0.5119 - val_accuracy: 0.7768
+Epoch 10/10
+6090/6090 - 89s - loss: 0.5166 - accuracy: 0.7667 - val_loss: 0.5142 - val_accuracy: 0.7800

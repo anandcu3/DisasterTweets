@@ -1,0 +1,59 @@
+Data shape =  (7613, 5)
+Corpus created successfully
+0            deed reason earthquak may allah forgiv us
+1                 forest fire near la rong sask canada
+2    resid ask shelter place notifi offic evacu she...
+3          peopl receiv wildfir evacu order california
+4    got sent photo rubi alaska smoke wildfir pour ...
+5    rockyfir updat california hwi close direct due...
+6    flood disast heavi rain caus flash flood stree...
+7                               top hill see fire wood
+8               emerg evacu happen build across street
+9                             afraid tornado come area
+Name: 0, dtype: object
+embedding matrix shape -> (18888, 25)
+example: word 'tornado' has index of -> 322
+[-0.39229    -0.081708   -0.023277    0.079867   -0.51217002 -0.045167
+  0.99607003 -0.26958999  0.50896001  0.49594     0.34323999 -0.029634
+ -1.60870004  1.39769995  1.33539999 -0.16018     0.072705    0.7234
+  0.39535001 -0.73582    -0.35319     0.29728001  1.32939994 -1.17709994
+  0.22761001]
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding (Embedding)        (None, 50, 25)            472200    
+_________________________________________________________________
+spatial_dropout1d (SpatialDr (None, 50, 25)            0         
+_________________________________________________________________
+lstm (LSTM)                  (None, 100)               50400     
+_________________________________________________________________
+dense (Dense)                (None, 1)                 101       
+=================================================================
+Total params: 522,701
+Trainable params: 50,501
+Non-trainable params: 472,200
+_________________________________________________________________
+Shape of train (6090, 50)
+Shape of Validation  (1523, 50)
+Train on 6090 samples, validate on 1523 samples
+Epoch 1/10
+6090/6090 - 137s - loss: 0.6128 - accuracy: 0.6867 - val_loss: 0.5591 - val_accuracy: 0.7518
+Epoch 2/10
+6090/6090 - 133s - loss: 0.5954 - accuracy: 0.7025 - val_loss: 0.5530 - val_accuracy: 0.7564
+Epoch 3/10
+6090/6090 - 132s - loss: 0.5866 - accuracy: 0.7187 - val_loss: 0.5394 - val_accuracy: 0.7498
+Epoch 4/10
+6090/6090 - 137s - loss: 0.5779 - accuracy: 0.7192 - val_loss: 0.5245 - val_accuracy: 0.7715
+Epoch 5/10
+6090/6090 - 133s - loss: 0.5748 - accuracy: 0.7215 - val_loss: 0.5564 - val_accuracy: 0.6901
+Epoch 6/10
+6090/6090 - 133s - loss: 0.5696 - accuracy: 0.7278 - val_loss: 0.5401 - val_accuracy: 0.7321
+Epoch 7/10
+6090/6090 - 134s - loss: 0.5641 - accuracy: 0.7230 - val_loss: 0.5123 - val_accuracy: 0.7669
+Epoch 8/10
+6090/6090 - 133s - loss: 0.5627 - accuracy: 0.7325 - val_loss: 0.5337 - val_accuracy: 0.7571
+Epoch 9/10
+6090/6090 - 133s - loss: 0.5676 - accuracy: 0.7255 - val_loss: 0.5188 - val_accuracy: 0.7584
+Epoch 10/10
+6090/6090 - 134s - loss: 0.5614 - accuracy: 0.7368 - val_loss: 0.5093 - val_accuracy: 0.7735
