@@ -17,9 +17,19 @@ from sklearn import model_selection
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, LSTM,Dense, SpatialDropout1D, Dropout
+from tensorflow.keras.layers import Embedding, LSTM,Dense, Activation, SpatialDropout1D, Dropout
 from tensorflow.keras.initializers import Constant
 from tensorflow.keras.optimizers import Adam
+
+import ssl
+import tensorflow as tf
+ssl._create_default_https_context = ssl._create_default_https_context
+import os
+os.environ["PYTHONHTTPSVERIFY"] = "0"
+
+#create Model
+os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
+
 
 def read():
     data_train = pd.read_csv('data/train.csv')
@@ -113,7 +123,7 @@ with open(file_name,'r', encoding="utf8") as f:
 f.close()
 
 
-MAX_LEN=50  #assuming max 50 similar words
+MAX_LEN=100  #assuming max 50 similar words
 tokenizer_obj=Tokenizer()
 tokenizer_obj.fit_on_texts(corpus)
 sequences=tokenizer_obj.texts_to_sequences(corpus)
@@ -143,25 +153,27 @@ print(f'embedding matrix shape -> {embedding_matrix.shape}')
 print(f'example: word \'tornado\' has index of -> {word_index["tornado"]}')
 print(f'{embedding_matrix[word_index["tornado"]]}')
 
+with tf.device('/job:localhost/replica:0/task:0/device:GPU:0'):
 
-#create Model
-model=Sequential()
-embedding=Embedding(num_words,100,embeddings_initializer=Constant(embedding_matrix),
-                   input_length=MAX_LEN,trainable=False)
+    #create Model
+    model=Sequential()
+    embedding=Embedding(num_words,100,embeddings_initializer=Constant(embedding_matrix),
+                       input_length=MAX_LEN,trainable=False)
 
-#Simple NN model
-model.add(embedding)
-model.add(SpatialDropout1D(0.2))
-model.add(LSTM(100, dropout=0.2, recurrent_dropout=0.2))
-model.add(Dense(1, activation='sigmoid'))
-optimzer=Adam(learning_rate=3e-4)
-model.compile(loss='binary_crossentropy',optimizer=optimzer,metrics=['accuracy'])
-model.summary()
+    #Simple NN model
+    model.add(embedding)
+    model.add(SpatialDropout1D(0.3))
+    model.add(LSTM(100, dropout=0.2, recurrent_dropout=0.2))
+    model.add(Dense(1, activation='sigmoid'))
+    optimzer=Adam(learning_rate=3e-4)
+    model.compile(loss='binary_crossentropy',optimizer=optimzer,metrics=['accuracy'])
+    model.summary()
 
-#Data
-X_train,X_test,y_train,y_test=model_selection.train_test_split(train,train_labels,test_size=0.2)
-print('Shape of train',X_train.shape)
-print("Shape of Validation ",X_test.shape)
+    #Data
+    X_train,X_test,y_train,y_test=model_selection.train_test_split(train,train_labels,test_size=0.2)
+    print('Shape of train',X_train.shape)
+    print("Shape of Validation ",X_test.shape)
 
-#model fitting
-history=model.fit(X_train,y_train,batch_size=4,epochs=10,validation_data=(X_test,y_test),verbose=2)
+    #model fitting
+    history=model.fit(X_train,y_train,batch_size=4,epochs=10,validation_data=(X_test,y_test),verbose=2)
+    model.save('glove_model_100d.h5')

@@ -1,5 +1,3 @@
-# Reference : Kaggle links
-
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -8,6 +6,8 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Model
 from tensorflow.keras.callbacks import ModelCheckpoint
 import tensorflow_hub as hub
+import ssl
+
 
 "these check if gpu is available or not"
 #from tensorflow.python.client import device_lib
@@ -80,32 +80,37 @@ def build_model(bert_layer, max_len=512):
     return model
 
 
-#load downloaded module
-#module_url = "1"
+ssl._create_default_https_context = ssl._create_default_https_context
+import os
+os.environ["PYTHONHTTPSVERIFY"] = "0"
+module_url = "1"
+#module_url = "https://tfhub.dev/tensorflow/bert_en_uncased_L-24_H-1024_A-16/1"
 
-#train bert embeddings
-module_url = "https://tfhub.dev/tensorflow/bert_en_uncased_L-24_H-1024_A-16/1"
-bert_layer = hub.KerasLayer(module_url, trainable=True)
+os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
 
-train = pd.read_csv("data/train.csv")
-test = pd.read_csv("data/test.csv")
+with tf.device('/job:localhost/replica:0/task:0/device:GPU:0'):
 
-vocab_file = bert_layer.resolved_object.vocab_file.asset_path.numpy()
-do_lower_case = bert_layer.resolved_object.do_lower_case.numpy()
-tokenizer = tokenization.FullTokenizer(vocab_file, do_lower_case)
+    bert_layer = hub.KerasLayer(module_url, trainable=True)
 
-train_input = bert_encode(train.text.values, tokenizer, max_len=160)
-test_input = bert_encode(test.text.values, tokenizer, max_len=160)
-train_labels = train.target.values
+    train = pd.read_csv("data/train.csv")
+    test = pd.read_csv("data/test.csv")
 
-model = build_model(bert_layer, max_len=160)
-model.summary()
+    vocab_file = bert_layer.resolved_object.vocab_file.asset_path.numpy()
+    do_lower_case = bert_layer.resolved_object.do_lower_case.numpy()
+    tokenizer = tokenization.FullTokenizer(vocab_file, do_lower_case)
 
-train_history = model.fit(
-    train_input, train_labels,
-    validation_split=0.1,
-    epochs=1,
-    batch_size=4
-)
+    train_input = bert_encode(train.text.values, tokenizer, max_len=160)
+    test_input = bert_encode(test.text.values, tokenizer, max_len=160)
+    train_labels = train.target.values
 
-model.save('model.h5')
+    model = build_model(bert_layer, max_len=160)
+    model.summary()
+
+    train_history = model.fit(
+        train_input, train_labels,
+        validation_split=0.2,
+        epochs=3,
+        batch_size=4
+    )
+
+    model.save('model.h5')
