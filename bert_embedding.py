@@ -109,8 +109,8 @@ with tf.device('/job:localhost/replica:0/task:0/device:GPU:0'):
     train_history = model.fit(
         train_input, train_labels,
         validation_split=0.2,
-        epochs=3,
+        epochs=15,
         batch_size=4
     )
 
-    model.save('model.h5')
+    model.save('model_new.h5')
