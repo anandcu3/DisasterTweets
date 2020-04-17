@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -7,16 +8,20 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.callbacks import ModelCheckpoint
 import tensorflow_hub as hub
 import ssl
-
+import rnn_bert
 
 "these check if gpu is available or not"
 #from tensorflow.python.client import device_lib
-#print(device_lib.list_local_devices())
+# print(device_lib.list_local_devices())
 
-#bert tokenization file
+# bert tokenization file
 import tokenization
 
-#prepare bert embedding format for dataset
+# prepare bert embedding format for dataset
+
+rnn_reqd = True
+
+
 def bert_encode(texts, tokenizer, max_len=512):
     all_tokens = []
     all_masks = []
@@ -57,7 +62,8 @@ def bert_encode(texts, tokenizer, max_len=512):
 
 def build_model(bert_layer, max_len=512):
 
-    input_word_ids = Input(shape=(max_len,), dtype=tf.int32, name="input_word_ids")
+    input_word_ids = Input(
+        shape=(max_len,), dtype=tf.int32, name="input_word_ids")
     input_mask = Input(shape=(max_len,), dtype=tf.int32, name="input_mask")
     #print("Input mask : ", input_mask)
 
@@ -81,9 +87,8 @@ def build_model(bert_layer, max_len=512):
 
 
 ssl._create_default_https_context = ssl._create_default_https_context
-import os
 os.environ["PYTHONHTTPSVERIFY"] = "0"
-module_url = "1"
+module_url = "d:/SNLP data/1"
 #module_url = "https://tfhub.dev/tensorflow/bert_en_uncased_L-24_H-1024_A-16/1"
 
 os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
@@ -102,15 +107,17 @@ with tf.device('/job:localhost/replica:0/task:0/device:GPU:0'):
     train_input = bert_encode(train.text.values, tokenizer, max_len=160)
     test_input = bert_encode(test.text.values, tokenizer, max_len=160)
     train_labels = train.target.values
-
-    model = build_model(bert_layer, max_len=160)
+    if rnn_reqd:
+        model = rnn_bert.build_model(bert_layer, max_len=160)
+    else:
+        model = build_model(bert_layer, max_len=160)
     model.summary()
 
     train_history = model.fit(
         train_input, train_labels,
         validation_split=0.2,
-        epochs=15,
-        batch_size=4
+        epochs=5,
+        batch_size=1
     )
 
     model.save('model_new.h5')

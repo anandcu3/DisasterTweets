@@ -1,0 +1,24 @@
+Train on 6090 samples, validate on 1523 samples
+Epoch 1/10
+2020-04-16 23:39:46.710045: W tensorflow/core/common_runtime/shape_refiner.cc:88] Function instantiation has undefined input shape at index: 2289 in the outer inference context.
+2020-04-16 23:39:47.929138: W tensorflow/core/common_runtime/shape_refiner.cc:88] Function instantiation has undefined input shape at index: 2289 in the outer inference context.
+2020-04-16 23:39:52.626078: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cublas64_10.dll
+6090/6090 [==============================] - loss: 0.6171 - accuracy: 0.6719 - val_loss: 0.5602 - val_accuracy: 0.7492
+Epoch 2/10
+6090/6090 [==============================] - loss: 0.5368 - accuracy: 0.7514 - val_loss: 0.5068 - val_accuracy: 0.7774
+Epoch 3/10
+6090/6090 [==============================] - loss: 0.5063 - accuracy: 0.7701 - val_loss: 0.4915 - val_accuracy: 0.7827
+Epoch 4/10
+6090/6090 [==============================] - loss: 0.4891 - accuracy: 0.7768 - val_loss: 0.4733 - val_accuracy: 0.7958
+Epoch 5/10
+6090/6090 [==============================] - loss: 0.4786 - accuracy: 0.7834 - val_loss: 0.4699 - val_accuracy: 0.7919
+Epoch 6/10
+6090/6090 [==============================] - loss: 0.4704 - accuracy: 0.7870 - val_loss: 0.4599 - val_accuracy: 0.7945
+Epoch 7/10
+6090/6090 [==============================] - loss: 0.4646 - accuracy: 0.7901 - val_loss: 0.4585 - val_accuracy: 0.7991
+Epoch 8/10
+6090/6090 [==============================] - loss: 0.4596 - accuracy: 0.7921 - val_loss: 0.4538 - val_accuracy: 0.7984
+Epoch 9/10
+6090/6090 [==============================] - loss: 0.4552 - accuracy: 0.7929 - val_loss: 0.4521 - val_accuracy: 0.8030
+Epoch 10/10
+6090/6090 [==============================] - loss: 0.4511 - accuracy: 0.7956 - val_loss: 0.4624 - val_accuracy: 0.7997

@@ -4,3 +4,4 @@
 *.zip
 data/*.txt
 *.h5
+__pycache__
